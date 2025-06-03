@@ -63,10 +63,12 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 ## Project setup
 
 1. Clone the repository:
+   ```bash
+   https://github.com/Multi-Class-DDoS-Detection/Multi-Class-DDoS-Detection-using-LSTM-Autoencoder.git
+
+   cd Multi-Class-DDoS-Detection-using-LSTM-Autoencoder
    ```
-   git clone https://github.com/Multi-Class-DDoS-Detection/Multi-Class-DDoS-Detection-using-LSTM-Autoencoder.git
-   cd multiclass-ddos-detector
-```
+
 2. Move Files to Respective Virtual Machines (VMs)
 
 3. Ensure that Parrot os and target machine/s are on the same network
@@ -75,11 +77,12 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 ## How to run
 
 1. Execute the attck script from Parrot OS
-  ```
+  ```bash
   sudo python3 DDoS_sim.py -i <low/medium/high> -s -p <target port> <target IP> -d <attack_duration>
   ```
 
 2. Run CICFlowMeter on Ubuntu
+
   ```
   sudo bash run_cicflowmeter.sh
   ```
@@ -87,7 +90,7 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 3. Send the generated CSV file to the host machine
   ```
   sudo bash send_flow_file.sh
-  ```
+```
 
 - choose the file
 - enter IP address of host
@@ -95,7 +98,7 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 4. Receive File → Run Detection Model → Launch Dashboard
   ```
   python .\ddos_manager.py
-```
+  ```
 
   
 
