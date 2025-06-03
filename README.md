@@ -64,7 +64,7 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/multiclass-ddos-detector.git
+   git clone https://github.com/Multi-Class-DDoS-Detection/Multi-Class-DDoS-Detection-using-LSTM-Autoencoder.git
    cd multiclass-ddos-detector
 ```
 2. Move Files to Respective Virtual Machines (VMs)
