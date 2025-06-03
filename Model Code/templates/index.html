@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>🚀 Network Anomaly Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-blue-600 text-white p-4 text-center text-3xl font-bold">
+      🛡️ Network Anomaly Detection Dashboard
+    </header>
+
+    <main class="flex-grow p-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Attack Bar Chart -->
+        <div class="bg-white p-6 rounded-xl shadow-lg h-[400px] flex flex-col">
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            Attack Types Distribution
+          </h2>
+          <canvas id="attackBarChart" class="flex-grow"></canvas>
+        </div>
+
+        <div
+          class="bg-white p-6 rounded-xl shadow-lg h-[400px] flex flex-col items-center justify-center"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            Network Traffic (Anomaly vs Normal)
+          </h2>
+          <canvas id="anomalyPieChart" class="w-64 h-64"></canvas>
+        </div>
+      </div>
+
+      <!-- Data Records -->
+      <div class="mt-12">
+        <h2 class="text-3xl font-bold mb-6 text-center">📄 Detailed Records</h2>
+        <div
+          id="records"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <!-- Individual cards will be inserted here -->
+        </div>
+      </div>
+    </main>
+
+    <script>
+      async function fetchDataAndUpdate() {
+        const response = await fetch("/get-data");
+        const data = await response.json();
+
+        const recordsContainer = document.getElementById("records");
+        recordsContainer.innerHTML = "";
+
+        const attackTypeCounts = {};
+        const totalAttackCounts = {
+          benign: 0,
+          anomaly: 0,
+        };
+
+        let totalAttackCount = 0; // Total of all attack counts
+
+        // Iterate over the data
+        data.forEach((entry) => {
+          const attackType = entry["Type of Attack"] || "Unknown";
+          const attackCount = entry["Attack Count"]
+            ? parseInt(entry["Attack Count"], 10)
+            : 0;
+
+          // Accumulate benign and anomaly attack counts
+          if (entry["Anomaly or Benign"] === "Anomaly") {
+            totalAttackCounts.anomaly += attackCount;
+          } else if (entry["Anomaly or Benign"] === "Benign") {
+            totalAttackCounts.benign += attackCount;
+          }
+
+          // Accumulate attack counts by type, but exclude benign for the bar graph
+          if (entry["Anomaly or Benign"] === "Anomaly") {
+            if (!attackTypeCounts[attackType]) attackTypeCounts[attackType] = 0;
+            attackTypeCounts[attackType] += attackCount;
+            totalAttackCount += attackCount;
+          }
+
+          // Create record card (same as before)
+          const card = document.createElement("div");
+          card.className = "bg-white p-6 rounded-xl shadow-lg";
+          card.innerHTML = `
+        <h3 class="text-xl font-bold mb-2">${entry["Anomaly or Benign"]}</h3>
+        <p><strong>Attack Type:</strong> ${attackType}</p>
+        <p><strong>Attack Category:</strong> ${
+          entry["Attack Category"] || "N/A"
+        }</p>
+        <p><strong>Attack Count:</strong> ${attackCount}</p>
+        <p><strong>DST IP:</strong> ${entry["DST IP Address"]}</p>
+        <p><strong>DST Port:</strong> ${entry["DST Port"]}</p>
+        
+        <p><strong>Protocol:</strong> ${entry["Protocol"]}</p>
+        <p class="mt-2 text-gray-600 text-justify">${entry["Description"]}</p>
+      `;
+          recordsContainer.appendChild(card);
+        });
+
+        // Update Bar Chart with Attack Type Percentages (only for anomalies)
+        const barLabels = Object.keys(attackTypeCounts);
+        const barData = barLabels.map((attackType) => {
+          const percentage =
+            (attackTypeCounts[attackType] / totalAttackCount) * 100;
+          return percentage.toFixed(2);
+        });
+
+        attackBarChart.data.labels = barLabels;
+        const barColors = barLabels.map(
+          (_, i) => `hsl(${(i * 360) / barLabels.length}, 70%, 60%)`
+        );
+
+        attackBarChart.data.datasets[0].data = barData;
+        attackBarChart.data.datasets[0].backgroundColor = barColors;
+
+        attackBarChart.update();
+
+        // Update Pie Chart with Anomaly vs Benign Percentages
+        const anomalyPercentage =
+          (totalAttackCounts.anomaly /
+            (totalAttackCounts.anomaly + totalAttackCounts.benign)) *
+          100;
+        const benignPercentage =
+          (totalAttackCounts.benign /
+            (totalAttackCounts.anomaly + totalAttackCounts.benign)) *
+          100;
+
+        anomalyPieChart.data.datasets[0].data = [
+          benignPercentage.toFixed(2),
+          anomalyPercentage.toFixed(2),
+        ];
+        anomalyPieChart.update();
+      }
+
+      const attackBarChart = new Chart(
+        document.getElementById("attackBarChart"),
+        {
+          type: "bar",
+          data: {
+            labels: [],
+            datasets: [
+              {
+                label: "Attack Type (%)",
+                data: [],
+                backgroundColor: [], // dynamically filled
+                borderWidth: 1,
+                borderColor: "#000",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            layout: {
+              padding: {
+                left: 10,
+                right: 10,
+                top: 0,
+                bottom: 10,
+              },
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false,
+                },
+                ticks: {
+                  font: {
+                    weight: "bold",
+                    size: 14,
+                  },
+                  color: "#111", // dark
+                  maxRotation: 45,
+                  minRotation: 45,
+                },
+              },
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: "rgba(0, 0, 0, 0.1)",
+                },
+                ticks: {
+                  callback: (value) => value + "%",
+                  font: {
+                    weight: "bold",
+                    size: 14,
+                  },
+                  color: "#111", // dark
+                  stepSize: 10, // Display ticks at intervals of 10%
+                },
+                title: {
+                  display: true,
+                  text: "Percentage (%)",
+                  font: {
+                    weight: "bold",
+                    size: 16,
+                  },
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                display: false, // Hide the legend since labels are on X-axis
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    return context.formattedValue + "%";
+                  },
+                },
+              },
+            },
+          },
+        }
+      );
+
+      const anomalyPieChart = new Chart(
+        document.getElementById("anomalyPieChart"),
+        {
+          type: "pie",
+          data: {
+            labels: ["Benign", "Anomaly"],
+            datasets: [
+              {
+                data: [],
+                backgroundColor: ["#10b981", "#ef4444"],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                position: "bottom", // Moves labels below chart
+                labels: {
+                  font: {
+                    size: 16,
+                    weight: "bold",
+                  },
+                  color: "#111",
+                },
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    return context.label + ": " + context.formattedValue + "%";
+                  },
+                },
+              },
+            },
+          },
+        }
+      );
+
+      // Reload data every 5 seconds
+      setInterval(fetchDataAndUpdate, 5000);
+      fetchDataAndUpdate();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+Anomaly or Benign: Benign
+Type of Attack: Benign
+Attack Count: 1862
+DST IP Address: 192.168.143.3
+DST Port: 80
+Attack Category: Normal
+Protocol: 6
+Description: Normal network traffic exhibiting no signs of malicious behavior.
+
+Anomaly or Benign: Anomaly
+Type of Attack: DDoS_SYN
+Attack Count: 1834
+DST IP Address: 192.168.143.3
+DST Port: 12345
+Attack Category: TCP-based Exploitation DDoS
+Protocol: 6
+Description: This is a TCP-based exploitation DDoS attack exploiting connection-based protocols (e.g., SYN floods, HTTP floods) to exhaust server resources. Enable SYN cookies, use stateful firewalls, and apply rate-limiting.
+
+Anomaly or Benign: Anomaly
+Type of Attack: DDoS_UDP_Lag
+Attack Count: 2243
+DST IP Address: 192.168.143.3
+DST Port: 12345
+Attack Category: UDP-based Exploitation DDoS
+Protocol: 17
+Description: This is a UDP-based exploitation DDoS attack where direct UDP floods overwhelm target systems with traffic. Use rate-limiting, deploy DDoS protection services, and implement traffic filtering at the perimeter.
+
+Anomaly or Benign: Anomaly
+Type of Attack: DrDoS_DNS
+Attack Count: 1252
+DST IP Address: 192.168.143.3
+DST Port: 12345
+Attack Category: TCP/UDP-based reflection DDoS
+Protocol: 17
+Description: This is a TCP/UDP-based reflection DDoS attack using misconfigured or open services (like DNS, LDAP, NetBIOS, SNMP, Portmap) to amplify traffic. Secure the services, restrict access, apply rate-limiting, and block spoofed traffic.
+
+Anomaly or Benign: Anomaly
+Type of Attack: DrDoS_UDP
+Attack Count: 1875
+DST IP Address: 192.168.143.3
+DST Port: 80
+Attack Category: UDP-based Reflection DDoS
+Protocol: 17
+Description: This is a UDP-based reflection DDoS attack where services like CharGen, NTP, TFTP, and generic UDP reflect large responses to spoofed requests. Disable unused UDP services, restrict access, and implement anti-spoofing measures.
