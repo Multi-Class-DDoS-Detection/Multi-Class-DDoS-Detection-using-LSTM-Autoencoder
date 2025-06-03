@@ -1,0 +1,30 @@
+# Ignore build artifacts
+build/
+*.o
+*.class
+
+# Ignore logs and temporary files
+logs/
+*.log
+*.tmp
+
+# Ignore data files (CSV, etc.)
+data/
+
+# Ignore jnetpcap library 
+jnetpcap/
+
+# Ignore Gradle files 
+.gradle/
+
+
+# Ignore Maven files if not needed
+pom.xml
+
+# Ignore misc files
+ReadMe.txt
+LICENSE.txt
+
+
+.vscode/
+
