@@ -76,23 +76,27 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 
 1. Execute the attck script from Parrot OS
   ```
-  sudo python3 DDoS_sim.py -i <low/medium/high> -s -p <target port> <target IP> -d <attack_duration>```
+  sudo python3 DDoS_sim.py -i <low/medium/high> -s -p <target port> <target IP> -d <attack_duration>
+  ```
 
 2. Run CICFlowMeter on Ubuntu
   ```
   sudo bash run_cicflowmeter.sh
-  ```
+```
 
 3. Send the generated CSV file to the host machine
   ```
   sudo bash send_flow_file.sh
 ```
+
 - choose the file
 - enter IP address of host
 
 4. Receive File → Run Detection Model → Launch Dashboard
   ```
   python .\ddos_manager.py
-  ```
+```
+
+  
 
 
