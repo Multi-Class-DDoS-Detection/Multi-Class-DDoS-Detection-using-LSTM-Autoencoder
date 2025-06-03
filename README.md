@@ -5,7 +5,7 @@
 This project presents a complete pipeline for real-time detection and classification of Distributed Denial of Service (DDoS) attacks. It leverages deep learning techniques, combining an LSTM Autoencoder for anomaly detection and a DNN for multi-class attack classification. The solution is based on realistic traffic data and supports real-time deployment scenarios.
 
 ![System Outline](Assets/System_Outline.png)
-
+<!-- <img src = "Assets/System_outline.png" width=00> -->
 ---
 
 ## Key Features
@@ -60,12 +60,39 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 
 ---
 
-## How to Run
+## Project setup
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/multiclass-ddos-detector.git
    cd multiclass-ddos-detector
 
+2. Move Files to Respective Virtual Machines (VMs)
+
+3. Ensure that Parrot os and target machine/s are on the same network
+
+
+## How to run
+
+1. Execute the attck script from Parrot OS
+  ```bash
+  sudo python3 DDoS_sim.py -i <low/medium/high> -s -p <target port> <target IP> -d <attack_duration>
+
+2. Run CICFlowMeter on Ubuntu
+  ```bash
+  sudo bash run_cicflowmeter.sh
+
+3. Send the generated CSV file to the host machine
+  ```bash
+  sudo bash send_flow_file.sh
+
+- choose the file
+- enter IP address of host
+
+4. Receive File → Run Detection Model → Launch Dashboard
+  ```bash
+  python .\ddos_manager.py
+
+  
 
 
