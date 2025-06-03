@@ -63,10 +63,10 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 ## Project setup
 
 1. Clone the repository:
-   ```bash
+   ```
    git clone https://github.com/yourusername/multiclass-ddos-detector.git
    cd multiclass-ddos-detector
-
+```
 2. Move Files to Respective Virtual Machines (VMs)
 
 3. Ensure that Parrot os and target machine/s are on the same network
@@ -82,12 +82,12 @@ The dashboard visualizes network anomaly detection results. It showcases distrib
 2. Run CICFlowMeter on Ubuntu
   ```
   sudo bash run_cicflowmeter.sh
-```
+  ```
 
 3. Send the generated CSV file to the host machine
   ```
   sudo bash send_flow_file.sh
-```
+  ```
 
 - choose the file
 - enter IP address of host
