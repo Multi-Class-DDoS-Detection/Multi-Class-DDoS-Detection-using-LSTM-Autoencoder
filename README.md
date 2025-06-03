@@ -4,7 +4,7 @@
 
 This project presents a complete pipeline for real-time detection and classification of Distributed Denial of Service (DDoS) attacks. It leverages deep learning techniques, combining an LSTM Autoencoder for anomaly detection and a DNN for multi-class attack classification. The solution is based on realistic traffic data and supports real-time deployment scenarios.
 
-![System Outline](Assets/System_outline.png)
+![System Outline](Assets/System_Outline.png)
 
 ---
 
@@ -53,7 +53,7 @@ The system is built on the [CIC-DDoS2019](https://www.kaggle.com/datasets/dhoogl
 ## Screenshots
 
 
-### 📊 Real Time Detection Dashboard
+### Real Time Detection Dashboard
 ![Dashboard](Assets/DDoS_Detection_Dashboard.png)
 
 The dashboard visualizes network anomaly detection results. It showcases distribution of various DDoS attack types and the proportion of anomalous versus benign traffic. Use also can see the detailed records, enabling effective real-time monitoring and classification of network threats for cybersecurity analysis
